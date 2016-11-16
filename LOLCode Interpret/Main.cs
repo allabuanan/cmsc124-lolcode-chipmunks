@@ -16,6 +16,18 @@ namespace LOLCode_Interpret
         public Main()
         {
             InitializeComponent();
+            EventHandler handler = (s, e) => {  //Event Handler for synchronizing scroll on both list boxes
+                if (s == lexemeListBox)
+                    classificationListBox.TopIndex = lexemeListBox.TopIndex;
+                if (s == classificationListBox)
+                    lexemeListBox.TopIndex = classificationListBox.TopIndex;
+            };
+
+            this.lexemeListBox.MouseCaptureChanged += handler;
+            this.classificationListBox.MouseCaptureChanged += handler;
+            this.lexemeListBox.SelectedIndexChanged += handler;
+            this.classificationListBox.SelectedIndexChanged += handler;
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -23,8 +35,7 @@ namespace LOLCode_Interpret
             Lexer.readPerLine(Lexer.filePath);
             lexemeListBox.DataSource = Lexer.keyMatch;
             classificationListBox.DataSource = Lexer.classification;
-            codeTextBox.Text = Lexer.codeBlock;
-            
+            codeListBox.DataSource = Lexer.code;
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -81,11 +92,6 @@ namespace LOLCode_Interpret
                     }
                 }
             }
-        }
-
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }
